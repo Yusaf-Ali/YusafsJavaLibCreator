@@ -170,6 +170,8 @@ public class JavaLibCreator {
 		if (isCompiled)
 			jarInputFolderName = "nifCompiled";
 		if (jarExe.exists()) {
+			if (jarFile.exists())
+				jarFile.delete();
 			StringBuilder sb = new StringBuilder();
 			sb.append("\"");
 			sb.append(jarExe.getAbsolutePath());
