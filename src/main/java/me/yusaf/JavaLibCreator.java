@@ -1,7 +1,9 @@
 package me.yusaf;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 public class JavaLibCreator {
 	private boolean javacVerbose;
@@ -12,13 +14,11 @@ public class JavaLibCreator {
 	private String jarOutputFileName;
 	private String javacRootFolder;
 	private String javaHome;
-	private Logger javacLog = new Logger();
-	private Logger jarLog = new Logger();
+	private Logger javacLog = Logger.getInstance(this.getClass(), "JAVAC.EXE");
+	private Logger jarLog = Logger.getInstance(this.getClass(), "JAR.EXE");
 
 	public JavaLibCreator() {
 		this.javaHome = System.getProperty("java.home");
-		this.javacLog.setSuffix("JAVAC.EXE");
-		this.jarLog.setSuffix("JAR.EXE");
 		this.isCompiled = false;
 	}
 
@@ -29,7 +29,7 @@ public class JavaLibCreator {
 	 */
 	public JavaLibCreator enableJavacVerbose() {
 		this.javacVerbose = true;
-		javacLog.enable();
+		Logger.enabled = true;
 		return this;
 	}
 
@@ -42,7 +42,6 @@ public class JavaLibCreator {
 	 */
 	public JavaLibCreator enableJarVerbose(boolean cmdLog) {
 		this.jarVerbose = cmdLog;
-		jarLog.enable();
 		return this;
 	}
 
@@ -78,8 +77,7 @@ public class JavaLibCreator {
 	}
 
 	/**
-	 * If compiling, set this folder to specify folder containing .java files that will
-	 * be compiled to .class files by compile method.
+	 * If compiling, set this folder to specify folder containing .java files that will be compiled to .class files by compile method.
 	 * 
 	 * @param rootFolder
 	 * @return
@@ -90,8 +88,7 @@ public class JavaLibCreator {
 	}
 
 	/**
-	 * Custom java home location on which jar.exe and javac.exe depends. Must not set
-	 * if not required.
+	 * Custom java home location on which jar.exe and javac.exe depends. Must not set if not required.
 	 * 
 	 * @param home
 	 *            Javahome location without bin in the path
@@ -103,9 +100,8 @@ public class JavaLibCreator {
 	}
 
 	/**
-	 * Compile method that will generate a temporary folder containing all compiled classes.
-	 * Uses cmd for compiling. Uses ProcessBuilder. Uses a temporary classes file to hold all
-	 * paths to classes with their names, and removes automatically.
+	 * Compile method that will generate a temporary folder containing all compiled classes. Uses cmd for compiling. Uses ProcessBuilder. Uses a temporary
+	 * classes file to hold all paths to classes with their names, and removes automatically.
 	 * 
 	 * @return
 	 * @throws FileNotFoundException
@@ -150,10 +146,9 @@ public class JavaLibCreator {
 	}
 
 	/**
-	 * Creates lib as a jar file with default Manifest. Uses cmd to perform the task.
-	 * Uses ProcessBuilder to execute cmd program. If compile method was called before,
-	 * deletes nifCompiled temp folder. CommandLine program has its own log and can be disabled
-	 * by passing false to {@link JavaLibCreator#enableJarVerbose(boolean)}
+	 * Creates lib as a jar file with default Manifest. Uses cmd to perform the task. Uses ProcessBuilder to execute cmd program. If compile method was called
+	 * before, deletes nifCompiled temp folder. CommandLine program has its own log and can be disabled by passing false to
+	 * {@link JavaLibCreator#enableJarVerbose(boolean)}
 	 * 
 	 * @return
 	 * @throws FileNotFoundException
